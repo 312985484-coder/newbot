@@ -1,0 +1,105 @@
+"""
+管理后台认证模块
+"""
+
+import hashlib
+import secrets
+from datetime import datetime, timedelta
+from functools import wraps
+
+from flask import Flask, request, jsonify, current_app
+from jwt import PyJWTError, jwt
+
+# 存储活跃 token（生产环境应使用 Redis）
+active_tokens = {}
+
+
+def hash_password(password: str) -> str:
+    """密码哈希"""
+    salt = "telegreat_admin_salt"
+    return hashlib.sha256(f"{password}{salt}".encode()).hexdigest()
+
+
+def verify_password(password: str, hashed: str) -> bool:
+    """验证密码"""
+    return hash_password(password) == hashed
+
+
+def create_token(admin_id: int, username: str) -> str:
+    """创建 JWT Token"""
+    payload = {
+        "admin_id": admin_id,
+        "username": username,
+        "exp": datetime.utcnow() + current_app.config['JWT_ACCESS_TOKEN_EXPIRES'],
+        "iat": datetime.utcnow(),
+        "jti": secrets.token_hex(16)  # JWT ID
+    }
+    token = jwt.encode(
+        payload,
+        current_app.config['JWT_SECRET_KEY'],
+        algorithm="HS256"
+    )
+    active_tokens[payload['jti']] = payload
+    return token
+
+
+def revoke_token(jti: str) -> bool:
+    """撤销 Token"""
+    if jti in active_tokens:
+        del active_tokens[jti]
+        return True
+    return False
+
+
+def token_required(f):
+    """Token 验证装饰器"""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        auth_header = request.headers.get('Authorization')
+
+        if auth_header and auth_header.startswith('Bearer '):
+            token = auth_header.split(' ')[1]
+
+        if not token:
+            return jsonify({"error": "未提供认证令牌"}), 401
+
+        try:
+            payload = jwt.decode(
+                token,
+                current_app.config['JWT_SECRET_KEY'],
+                algorithms=["HS256"]
+            )
+            # 检查 token 是否已撤销
+            if payload['jti'] not in active_tokens:
+                return jsonify({"error": "令牌已失效"}), 401
+
+            request.admin_id = payload['admin_id']
+            request.admin_username = payload['username']
+            request.token_jti = payload['jti']
+
+        except PyJWTError as e:
+            return jsonify({"error": f"无效的令牌: {str(e)}"}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+
+def init_auth(app: Flask):
+    """初始化认证"""
+    @app.before_request
+    def check_ip():
+        """IP 黑名单检查（可选）"""
+        pass
+
+
+def login_required(f):
+    """登录验证装饰器"""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token:
+            return jsonify({"error": "需要登录"}), 401
+        return f(*args, **kwargs)
+    return decorated

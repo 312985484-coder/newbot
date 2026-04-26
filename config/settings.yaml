@@ -1,0 +1,47 @@
+# Telegram Bot 配置
+telegram:
+  bot_token: "${TELEGRAM_BOT_TOKEN}"
+  admin_user_ids:
+    - 123456789
+    - 987654321
+  super_admin_user_ids:
+    - 123456789
+
+# 数据库配置
+database:
+  url: "sqlite:///data/telegreat.db"
+  # url: "postgresql://user:password@localhost:5432/telegreat"
+  echo: false
+  pool_size: 5
+  max_overflow: 10
+
+# 安全配置
+security:
+  api_key_length: 64
+  api_key_expires_days: 365
+  max_report_per_day: 10
+
+# 广告配置
+advertisement:
+  pinned_count: 2
+  random_count: 3
+  admin_contact: "@admin_contact"
+
+# 群组配置
+group:
+  default_welcome_enabled: true
+  default_antispam_enabled: true
+  default_security_level: "medium"
+  default_auto_mute: true
+
+# 风险等级配置
+risk_levels:
+  high:
+    report_count_min: 5
+    amount_min: 5000
+  medium:
+    report_count_min: 3
+    amount_min: 1000
+  low:
+    report_count_min: 1
+    amount_min: 0

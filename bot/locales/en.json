@@ -1,0 +1,50 @@
+{
+  "start": {
+    "welcome": "👋 Welcome to <b>TeleGreat Anti-Scam Bot</b>!\n\n🔍 I can help you:\n• Check if an account has scam reports\n• Report scammers to protect the community\n• Appeal false reports\n\n⚠️ Always verify before sending money to strangers!",
+    "welcome_with_name": "👋 Welcome, {name}!"
+  },
+  "search": {
+    "title": "🔍 Search User",
+    "not_found": "✅ No scam reports found for this account",
+    "found": "⚠️ This account has been reported {count} times",
+    "risk_safe": "✅ Safe",
+    "risk_low": "🟡 Low Risk",
+    "risk_medium": "🟠 Medium Risk",
+    "risk_high": "🔴 High Risk",
+    "total_amount": "💰 Total Amount: {amount} USDT"
+  },
+  "report": {
+    "title": "🚨 Report Scammer",
+    "need_key": "🔒 API key required for reporting",
+    "submit_success": "✅ Report submitted, pending review",
+    "pending": "📋 Your report is being reviewed"
+  },
+  "appeal": {
+    "title": "🛡️ Appeal Channel",
+    "submit_success": "✅ Appeal submitted, pending review",
+    "no_record": "❌ No scam reports on your account"
+  },
+  "admin": {
+    "title": "🔧 Admin Panel",
+    "pending_reports": "📋 Pending reports: {count}",
+    "pending_appeals": "📝 Pending appeals: {count}",
+    "approve_success": "✅ Approved",
+    "reject_success": "❌ Rejected"
+  },
+  "errors": {
+    "generic": "❌ Operation failed, please try again",
+    "permission_denied": "❌ Permission denied",
+    "invalid_input": "❌ Invalid input",
+    "not_found": "❌ Record not found"
+  },
+  "buttons": {
+    "search": "🔍 Search User",
+    "report": "🚨 Report Scammer",
+    "appeal": "🛡️ Appeal",
+    "profile": "👤 Profile",
+    "help": "📖 Help",
+    "back": "🔙 Back",
+    "confirm": "✅ Confirm",
+    "cancel": "❌ Cancel"
+  }
+}

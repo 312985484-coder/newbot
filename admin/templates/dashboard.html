@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - TeleGreat</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- 侧边栏 -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>TeleGreat</h2>
+                <span>管理后台</span>
+            </div>
+            <div class="sidebar-nav">
+                <a href="/" class="active" onclick="showSection('dashboard')">
+                    <span class="icon">📊</span>
+                    <span>仪表盘</span>
+                </a>
+                <a href="#" onclick="showSection('reports')">
+                    <span class="icon">🚨</span>
+                    <span>举报管理</span>
+                </a>
+                <a href="#" onclick="showSection('appeals')">
+                    <span class="icon">🛡️</span>
+                    <span>申诉管理</span>
+                </a>
+                <a href="#" onclick="showSection('users')">
+                    <span class="icon">👥</span>
+                    <span>用户管理</span>
+                </a>
+                <a href="#" onclick="showSection('apikeys')">
+                    <span class="icon">🔑</span>
+                    <span>API Keys</span>
+                </a>
+                <a href="#" onclick="showSection('ads')">
+                    <span class="icon">📢</span>
+                    <span>广告管理</span>
+                </a>
+                <a href="#" onclick="showSection('broadcast')">
+                    <span class="icon">📨</span>
+                    <span>广播消息</span>
+                </a>
+                <a href="#" onclick="logout()">
+                    <span class="icon">🚪</span>
+                    <span>退出登录</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- 主内容 -->
+        <main class="main-content">
+            <!-- 仪表盘 -->
+            <div id="dashboardContent" class="section">
+                <div class="page-header">
+                    <h1>仪表盘</h1>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="label">总用户</div>
+                        <div class="value" id="totalUsers">0</div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="label">活跃用户</div>
+                        <div class="value" id="activeUsers">0</div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="label">总举报</div>
+                        <div class="value" id="totalReports">0</div>
+                    </div>
+                    <div class="stat-card danger">
+                        <div class="label">待审核举报</div>
+                        <div class="value" id="pendingReports">0</div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="label">总申诉</div>
+                        <div class="value" id="totalAppeals">0</div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="label">待处理申诉</div>
+                        <div class="value" id="pendingAppeals">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">被举报用户</div>
+                        <div class="value" id="reportedUsers">0</div>
+                    </div>
+                    <div class="stat-card danger">
+                        <div class="label">高风险用户</div>
+                        <div class="value" id="highRiskUsers">0</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>💰 涉案金额统计</h3>
+                    </div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--danger);">
+                        <span id="totalAmount">0</span> USDT
+                    </div>
+                </div>
+            </div>
+
+            <!-- 举报管理 -->
+            <div id="reportsContent" class="section hidden">
+                <div class="page-header">
+                    <h1>举报管理</h1>
+                </div>
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>目标用户</th>
+                                    <th>用户ID</th>
+                                    <th>金额</th>
+                                    <th>描述</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTableBody">
+                                <tr><td colspan="6" style="text-align:center;"><div class="loading"></div></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="pagination"></div>
+                </div>
+            </div>
+
+            <!-- 申诉管理 -->
+            <div id="appealsContent" class="section hidden">
+                <div class="page-header">
+                    <h1>申诉管理</h1>
+                </div>
+                <div class="card">
+                    <p style="text-align:center; color: var(--gray-500);">功能开发中...</p>
+                </div>
+            </div>
+
+            <!-- 用户管理 -->
+            <div id="usersContent" class="section hidden">
+                <div class="page-header">
+                    <h1>用户管理</h1>
+                </div>
+                <div class="card">
+                    <p style="text-align:center; color: var(--gray-500);">功能开发中...</p>
+                </div>
+            </div>
+
+            <!-- API Keys -->
+            <div id="apikeysContent" class="section hidden">
+                <div class="page-header">
+                    <h1>API Keys 管理</h1>
+                    <button class="btn btn-primary" onclick="document.getElementById('generateModal').classList.add('show')">
+                        + 批量生成
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>用户ID</th>
+                                    <th>用户名</th>
+                                    <th>API Key</th>
+                                    <th>请求次数</th>
+                                    <th>过期时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="apiKeysTableBody">
+                                <tr><td colspan="7" style="text-align:center;"><div class="loading"></div></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 广告管理 -->
+            <div id="adsContent" class="section hidden">
+                <div class="page-header">
+                    <h1>广告管理</h1>
+                    <button class="btn btn-primary" onclick="document.getElementById('createAdModal').classList.add('show')">
+                        + 添加广告
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>标题</th>
+                                    <th>内容</th>
+                                    <th>类型</th>
+                                    <th>浏览</th>
+                                    <th>点击</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adsTableBody">
+                                <tr><td colspan="7" style="text-align:center;"><div class="loading"></div></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 广播 -->
+            <div id="broadcastContent" class="section hidden">
+                <div class="page-header">
+                    <h1>广播消息</h1>
+                </div>
+                <div class="card">
+                    <p style="margin-bottom: 1rem; color: var(--gray-600);">
+                        向所有用户发送广播通知消息
+                    </p>
+                    <div class="form-group">
+                        <label for="broadcastMessage">消息内容</label>
+                        <textarea id="broadcastMessage" rows="5" placeholder="输入要广播的消息内容..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="sendBroadcast()">发送广播</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 生成 API Key 模态框 -->
+    <div id="generateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>批量生成 API Keys</h3>
+                <button class="modal-close" onclick="document.getElementById('generateModal').classList.remove('show')">&times;</button>
+            </div>
+            <div class="form-group">
+                <label for="keyCount">生成数量</label>
+                <input type="number" id="keyCount" value="10" min="1" max="100">
+            </div>
+            <div class="form-group">
+                <label for="expiresDays">有效期（天）</label>
+                <input type="number" id="expiresDays" value="365" min="1">
+            </div>
+            <button class="btn btn-primary btn-block" onclick="generateKeys()">生成</button>
+        </div>
+    </div>
+
+    <!-- 创建广告模态框 -->
+    <div id="createAdModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加广告</h3>
+                <button class="modal-close" onclick="document.getElementById('createAdModal').classList.remove('show')">&times;</button>
+            </div>
+            <form id="createAdForm">
+                <div class="form-group">
+                    <label for="adTitle">标题</label>
+                    <input type="text" id="adTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="adContent">内容</label>
+                    <textarea id="adContent" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="adType">类型</label>
+                    <select id="adType">
+                        <option value="random">随机广告</option>
+                        <option value="pinned">置顶广告</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="adLinkUrl">链接（可选）</label>
+                    <input type="url" id="adLinkUrl">
+                </div>
+                <button type="button" class="btn btn-primary btn-block" onclick="createAd()">创建</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        function showSection(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(name + 'Content').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

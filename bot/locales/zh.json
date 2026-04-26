@@ -1,0 +1,50 @@
+{
+  "start": {
+    "welcome": "👋 欢迎使用 <b>TeleGreat 防骗举报机器人</b>！\n\n🔍 我能帮助您：\n• 查询可疑账号是否有诈骗历史\n• 举报骗子，保护社区安全\n• 申诉被错误举报的账号\n\n⚠️ 请勿轻信陌生人的转账要求，交易前请先查询！",
+    "welcome_with_name": "👋 欢迎，{name}！"
+  },
+  "search": {
+    "title": "🔍 查询用户",
+    "not_found": "✅ 该账号暂无举报记录",
+    "found": "⚠️ 该账号已被举报 {count} 次",
+    "risk_safe": "✅ 安全",
+    "risk_low": "🟡 低风险",
+    "risk_medium": "🟠 中风险",
+    "risk_high": "🔴 高风险",
+    "total_amount": "💰 累积金额：{amount} USDT"
+  },
+  "report": {
+    "title": "🚨 举报骗子",
+    "need_key": "🔒 举报功能需要密钥验证",
+    "submit_success": "✅ 举报已提交，等待审核",
+    "pending": "📋 您的举报正在审核中"
+  },
+  "appeal": {
+    "title": "🛡️ 申诉通道",
+    "submit_success": "✅ 申诉已提交，等待处理",
+    "no_record": "❌ 您的账号暂无举报记录"
+  },
+  "admin": {
+    "title": "🔧 管理面板",
+    "pending_reports": "📋 待审核举报：{count}",
+    "pending_appeals": "📝 待处理申诉：{count}",
+    "approve_success": "✅ 已通过",
+    "reject_success": "❌ 已拒绝"
+  },
+  "errors": {
+    "generic": "❌ 操作失败，请重试",
+    "permission_denied": "❌ 权限不足",
+    "invalid_input": "❌ 输入无效",
+    "not_found": "❌ 未找到相关记录"
+  },
+  "buttons": {
+    "search": "🔍 查询用户",
+    "report": "🚨 举报骗子",
+    "appeal": "🛡️ 申诉通道",
+    "profile": "👤 个人资料",
+    "help": "📖 使用帮助",
+    "back": "🔙 返回",
+    "confirm": "✅ 确认",
+    "cancel": "❌ 取消"
+  }
+}
