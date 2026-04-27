@@ -7,8 +7,12 @@ import secrets
 from datetime import datetime, timedelta
 from functools import wraps
 
-from flask import Flask, request, jsonify, current_app
-from jwt import PyJWTError, jwt
+from flask import Flask, Blueprint, request, jsonify, current_app
+import jwt
+from jwt import PyJWTError
+
+# 创建 auth 蓝图
+auth_bp = Blueprint('auth', __name__)
 
 # 存储活跃 token（生产环境应使用 Redis）
 active_tokens = {}
@@ -103,3 +107,59 @@ def login_required(f):
             return jsonify({"error": "需要登录"}), 401
         return f(*args, **kwargs)
     return decorated
+
+
+# ============== Auth Routes ==============
+
+@auth_bp.route('/api/auth/login', methods=['POST'])
+def login():
+    """登录接口"""
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({"error": "请提供用户名和密码"}), 400
+    
+    username = data.get('username')
+    password = data.get('password')
+    
+    if not username or not password:
+        return jsonify({"error": "用户名和密码不能为空"}), 400
+    
+    # 验证用户名和密码
+    admin_username = current_app.config.get('ADMIN_USERNAME')
+    admin_password = current_app.config.get('ADMIN_PASSWORD')
+    
+    # 简单验证（生产环境应使用数据库存储）
+    if username == admin_username and password == admin_password:
+        # 哈希存储的密码验证（可选）
+        # if verify_password(password, hashed_password):
+        admin_id = 1  # 固定管理员 ID
+        token = create_token(admin_id, username)
+        
+        return jsonify({
+            "success": True,
+            "token": token,
+            "username": username
+        })
+    
+    return jsonify({"error": "用户名或密码错误"}), 401
+
+
+@auth_bp.route('/api/auth/logout', methods=['POST'])
+@token_required
+def logout():
+    """登出接口"""
+    jti = request.token_jti
+    revoke_token(jti)
+    return jsonify({"success": True, "message": "已退出登录"})
+
+
+@auth_bp.route('/api/auth/verify', methods=['GET'])
+@token_required
+def verify():
+    """验证 Token"""
+    return jsonify({
+        "success": True,
+        "admin_id": request.admin_id,
+        "username": request.admin_username
+    })
