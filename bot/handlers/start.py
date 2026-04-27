@@ -65,6 +65,10 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """处理 /help 命令"""
+    message = update.effective_message
+    if not message:
+        return
+
     help_text = """
 📖 <b>使用帮助</b>
 
@@ -90,17 +94,21 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 ⚠️ 遇到问题请联系管理员
     """
 
-    await update.message.reply_text(help_text, parse_mode="HTML")
+    await message.reply_text(help_text, parse_mode="HTML")
 
 
 async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """处理 /profile 命令"""
     user = update.effective_user
+    message = update.effective_message
+    if not message:
+        return
+
     db = SessionLocal()
     try:
         db_user = db.query(User).filter(User.id == user.id).first()
         if not db_user:
-            await update.message.reply_text("❌ 用户数据不存在，请先发送 /start")
+            await message.reply_text("❌ 用户数据不存在，请先发送 /start")
             return
 
         # 构建个人资料
@@ -122,6 +130,6 @@ async def profile_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 ⏰ 注册时间: {db_user.created_at.strftime('%Y-%m-%d %H:%M')}
         """
 
-        await update.message.reply_text(profile_text.strip(), parse_mode="HTML")
+        await message.reply_text(profile_text.strip(), parse_mode="HTML")
     finally:
         db.close()

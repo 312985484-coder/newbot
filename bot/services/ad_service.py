@@ -70,7 +70,7 @@ def build_ads_text(pinned_ads: List, random_ads: List) -> str:
             lines.append(f"🔗 {ad.link_text}: {ad.link_url}")
         lines.append("")
 
-    lines.append(f"💰 广告投放联系：@admin_contact")
+    lines.append(f"💰 广告投放联系：{settings.admin_contact}")
     lines.append("")
 
     return "\n".join(lines)

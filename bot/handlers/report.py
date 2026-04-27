@@ -6,6 +6,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
 from bot.database.connection import SessionLocal
+from bot.config import settings
 from bot.database.models import User, Report, ReportedUser
 from bot.keyboards.inline import get_report_keyboard, get_main_menu_keyboard
 from bot.services.report_service import create_report, validate_api_key
@@ -36,13 +37,13 @@ async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ]
             await context.bot.send_message(
                 chat_id=chat_id,
-                text="""
+                text=f"""
 🔒 <b>需要密钥验证</b>
 
 举报功能需要先验证您的密钥才能使用。
 
 如果您还没有密钥，请联系管理员获取：
-👤 @admin_contact
+👤 {settings.admin_contact}
 
 💡 密钥可以通过以下方式获得：
 • 购买获取

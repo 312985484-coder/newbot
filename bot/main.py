@@ -97,7 +97,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # 广告位招租
     if data == "advertise":
         await query.edit_message_text(
-            text="""
+            text=f"""
 📢 <b>广告位招租</b>
 
 我们提供以下广告位：
@@ -118,7 +118,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 • 多渠道展示
 
 📞 联系方式：
-👤 @admin_contact
+👤 {settings.admin_contact}
             """,
             parse_mode="HTML",
             reply_markup=get_main_menu_keyboard()
@@ -128,7 +128,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # 购买密钥
     if data == "buy_key":
         await query.edit_message_text(
-            text="""
+            text=f"""
 🔑 <b>获取 API 密钥</b>
 
 举报功能需要有效的 API 密钥。
@@ -139,7 +139,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 3️⃣ 邀请好友获得奖励
 
 📞 联系方式：
-👤 @admin_contact
+👤 {settings.admin_contact}
             """,
             parse_mode="HTML",
             reply_markup=get_main_menu_keyboard()
