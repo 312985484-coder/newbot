@@ -131,8 +131,6 @@ def login():
     
     # 简单验证（生产环境应使用数据库存储）
     if username == admin_username and password == admin_password:
-        # 哈希存储的密码验证（可选）
-        # if verify_password(password, hashed_password):
         admin_id = 1  # 固定管理员 ID
         token = create_token(admin_id, username)
         
@@ -163,3 +161,4 @@ def verify():
         "admin_id": request.admin_id,
         "username": request.admin_username
     })
+

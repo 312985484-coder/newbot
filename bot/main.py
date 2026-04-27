@@ -210,7 +210,7 @@ def main():
     application.add_handler(CallbackQueryHandler(button_handler))
     application.add_handler(CallbackQueryHandler(admin_callback, pattern=r"^(admin_|approve_|reject_)"))
     application.add_handler(CallbackQueryHandler(search_detail_callback, pattern=r"^search_detail_"))
-    application.add_handler(CallbackQueryHandler(appeal_callback, pattern=r"^appeal"))
+    application.add_handler(CallbackQueryHandler(appeal_callback, pattern=r"^(appeal|appeal_approve_|appeal_reject_)"))
 
     # 消息处理器
     # 处理转发的消息（用于查询）
@@ -231,12 +231,8 @@ def main():
     ))
 
     # 启动机器人
-    logger.info(f"机器人已启动，监听端口: {settings.bot_port}")
-    application.run_polling(
-        allowed_updates=Update.ALL_TYPES,
-        port=settings.bot_port,
-        listen=settings.bot_host
-    )
+    logger.info("机器人已启动，开始监听消息...")
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == "__main__":

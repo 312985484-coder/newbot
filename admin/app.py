@@ -12,8 +12,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from flask import Flask, jsonify, request, send_from_directory, render_template
 from flask_cors import CORS
 
-from admin.routes import admin_bp
-from admin.auth import auth_bp, init_auth
+from admin.routes import admin_bp, auth_bp
+from admin.auth import init_auth
 from admin.config import AdminConfig
 
 app = Flask(__name__, 

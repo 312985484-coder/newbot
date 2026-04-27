@@ -47,6 +47,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"  # 忽略未知字段
 
     def get_admin_ids(self) -> list[int]:
         """获取管理员 ID 列表"""
